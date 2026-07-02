@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # CHIEF
 
 CHIEF is a privacy-first personal operations platform.
@@ -55,3 +56,6 @@ docker compose up
 docker compose down
 docker compose logs -f backend
 ```
+=======
+# CHIEF
+>>>>>>> 29b297556a5373367e6c4abc2866c7bebd366b42
