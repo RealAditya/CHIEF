@@ -1,19 +1,30 @@
 import React from 'react'
 
-export default function TodayPanel(){
-  const events = [
-    {time:'09:00', title:'Standup'},
-    {time:'11:00', title:'Call with Alex'},
-    {time:'15:00', title:'Review PRs'},
-  ]
+function formatTime(iso) {
+  if (!iso) return ''
+  const d = new Date(iso)
+  return d.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+}
+
+export default function TodayPanel({ events = [], loading = false }){
+  const today = new Date()
+  const key = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`
+  const todays = events.filter(ev => {
+    if (!ev.start_datetime) return false
+    const d = new Date(ev.start_datetime)
+    return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}` === key
+  })
+
   return (
     <div className="today-panel">
       <h3>Today</h3>
       <div className="today-list">
-        {events.map((e, idx)=> (
-          <div className="today-item" key={idx}>
-            <div className="time">{e.time}</div>
-            <div className="title">{e.title}</div>
+        {loading && <div className="loading">Loading…</div>}
+        {!loading && todays.length === 0 && <div className="empty">Nothing scheduled today.</div>}
+        {!loading && todays.map(ev => (
+          <div className="today-item" key={ev.id}>
+            <div className="time">{formatTime(ev.start_datetime)}</div>
+            <div className="title">{ev.title}</div>
           </div>
         ))}
       </div>
