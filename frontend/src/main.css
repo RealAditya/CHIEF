@@ -16,32 +16,36 @@
 }
 
 *{box-sizing:border-box}
-body,html,#root{height:100%;margin:0;font-family:'Space Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
-body{background:var(--bg);color:var(--text-primary)}
+html,body,#root{height:100vh;margin:0;font-family:'Space Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+body{background:var(--bg);color:var(--text-primary);overflow:hidden}
 
-.app-root{min-height:100vh;display:flex;flex-direction:column}
+/* App layout fixed to viewport to prevent page scrolling */
+.app-root{height:100vh;display:flex;flex-direction:column}
 
-.topnav{display:flex;align-items:center;justify-content:space-between;padding:20px 36px;background:transparent;border-bottom:1px solid rgba(255,255,255,0.04)}
+.topnav{display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 36px;background:transparent;border-bottom:1px solid rgba(255,255,255,0.04)}
 .topnav .logo{font-weight:800;font-size:26px;font-family:'Orbitron', sans-serif;letter-spacing:1.5px}
 .topnav .center{color:var(--text-secondary);font-weight:500}
 .topnav .icon-placeholder{margin-left:12px;padding:8px 10px;background:transparent;border:1px solid rgba(255,255,255,0.03);border-radius:8px;color:var(--text-secondary)}
 
-.main-grid{display:grid;grid-template-columns: 1fr 360px;gap:32px;padding:36px;flex:1}
+/* Main area sized to exactly fit between header and command bar to avoid scroll */
+.main-grid{display:grid;grid-template-columns: 1fr 380px;gap:36px;padding:28px;flex:0 1 auto;height:calc(100vh - 72px - 64px);overflow:hidden}
 .calendar-area{background:var(--surface);padding:22px;border-radius:14px;min-width:0;border:1px solid var(--border)}
 .calendar-area:hover{background:var(--surface-hover)}
 .calendar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
 .quick-add{background:transparent;color:var(--text-primary);border:1px solid var(--border);padding:10px 14px;border-radius:10px;cursor:pointer}
 
-.calendar{display:flex;flex-direction:column}
+.calendar{display:flex;flex-direction:column;height:100%}
 .month-title{font-size:40px;font-weight:800;margin:0 0 12px;color:var(--text-primary)}
 .weekdays{display:grid;grid-template-columns:repeat(7,1fr);color:var(--text-secondary);font-size:18px;font-weight:800;padding:12px 0}
-.week{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
-.day{min-height:110px;padding:10px;background:transparent;border-radius:10px;position:relative}
+/* weeks stretch to fill available vertical space so days compress instead of page scrolling */
+.weeks{display:flex;flex-direction:column;gap:12px;flex:1;overflow:hidden}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;flex:1}
+.day{min-height:0;padding:10px;background:transparent;border-radius:10px;position:relative;height:100%}
 .day .date{font-size:18px;font-weight:700;color:var(--text-primary)}
 .day .date.small{font-size:14px}
 .day.today{background:var(--accent);color:#fff;border-radius:8px;padding:10px;box-shadow:0 2px 8px rgba(0,0,0,0.25)}
 .day.today .date{color:#fff}
-.placeholder-event{margin-top:8px;font-size:12px;display:inline-block;padding:4px 6px;border-radius:8px;color:#fff;font-weight:600}
+.placeholder-event{margin-top:6px;font-size:12px;display:inline-block;padding:4px 6px;border-radius:8px;color:#fff;font-weight:600}
 .placeholder-event.meeting{background:var(--event-meeting);color:var(--text-primary)}
 .placeholder-event.birthday{background:var(--event-birthday)}
 .placeholder-event.reminder{background:var(--event-reminder)}
@@ -54,10 +58,10 @@ body{background:var(--bg);color:var(--text-primary)}
 .time{color:var(--text-secondary);min-width:60px}
 .title{font-weight:600;color:var(--text-primary)}
 
-.command-bar{position:sticky;bottom:0;left:0;right:0;background:transparent;display:flex;align-items:center;padding:14px 24px;border-top:1px solid rgba(255,255,255,0.03)}
-.command-bar .prompt{color:var(--text-secondary);margin-right:12px}
-.cmd-input{flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);color:var(--text-secondary);padding:10px 12px;border-radius:8px}
-.cmd-input:disabled{opacity:0.9}
+.command-bar{height:64px;flex:0 0 64px;background:transparent;display:flex;align-items:center;padding:12px 24px;border-top:1px solid rgba(255,255,255,0.03)}
+.command-bar .prompt{color:var(--text-secondary);margin-right:12px;font-family:'Space Grotesk';font-weight:600}
+.cmd-input{flex:1;background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--text-secondary);padding:12px 14px;border-radius:8px}
+.cmd-input:disabled{opacity:0.95}
 
 /* Responsive adjustments */
 @media (max-width: 1000px){
