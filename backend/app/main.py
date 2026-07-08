@@ -4,8 +4,11 @@ from typing import AsyncIterator
 from fastapi import FastAPI
 
 from backend.app.api.health import router as health_router
+from backend.app.api.modules import router as modules_router
+from backend.app.api.events import router as events_router
 from backend.app.core.config import get_settings
 from backend.app.core.logging import get_logger
+from backend.app.core.module_loader import loader as module_loader
 
 try:
     from psycopg import connect as psycopg_connect
@@ -21,6 +24,12 @@ logger = get_logger("chief.backend")
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     logger.info("startup")
+
+    # Discover modules on startup. The loader logs each discovered module.
+    try:
+        module_loader.discover()
+    except Exception:
+        logger.exception("Module discovery failed")
 
     if settings.enable_connectivity_checks:
         if psycopg_connect is not None:
@@ -53,3 +62,5 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(title="CHIEF", version="0.1.0", lifespan=lifespan)
 app.include_router(health_router)
+app.include_router(modules_router)
+app.include_router(events_router)

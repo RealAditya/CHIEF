@@ -1,0 +1,5 @@
+MODULE = {
+    "name": "booking",
+    "version": "0.1.0",
+    "description": "Booking module",
+}
