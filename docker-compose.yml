@@ -31,8 +31,9 @@ services:
       POSTGRES_USER: chief
       POSTGRES_PASSWORD: chief
       POSTGRES_DB: chief
-    ports:
-      - "5432:5432"
+    # Do not bind the Postgres container to host port to avoid conflicts with a native Postgres service
+    # ports:
+    #   - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
@@ -40,8 +41,9 @@ services:
   redis:
     image: redis:7-alpine
     container_name: chief-redis
-    ports:
-      - "6379:6379"
+    # Do not bind Redis to host port to avoid conflicts with native Redis
+    # ports:
+    #   - "6379:6379"
     volumes:
       - redis_data:/data
     restart: unless-stopped
