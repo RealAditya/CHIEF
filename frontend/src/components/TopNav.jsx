@@ -1,7 +1,8 @@
 import React from 'react'
 
 function IconPlaceholder({label}){
-  return <div className="icon-placeholder" aria-hidden>{label}</div>
+  // intentionally disabled placeholder with tooltip
+  return <button className="icon-placeholder" title="Coming soon" disabled aria-hidden>{label}</button>
 }
 
 export default function TopNav(){

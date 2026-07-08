@@ -41,40 +41,61 @@ function eventsByDay(events) {
   return map
 }
 
-export default function Calendar({ events = [], loading = false }) {
+export default function Calendar({ events = [], loading = false, selectedDate, onSelectDay, onSelectEvent, selectedEventId }) {
   const weeks = generateMonthMatrix()
   const now = new Date()
   const todayKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`
   const byDay = eventsByDay(events)
 
-  const weekdays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
   const monthName = now.toLocaleString(undefined, { month: 'long', year: 'numeric' })
+
+  function toKey(d) {
+    return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
+  }
+
+  const selectedKey = selectedDate ? toKey(selectedDate) : null
 
   return (
     <div className="calendar">
       <div className="month-title">{monthName}</div>
 
       <div className="weekdays">
-        {weekdays.map((w) => (
+        {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((w) => (
           <div key={w} className="weekday">{w}</div>
         ))}
       </div>
 
       <div className="weeks">
-        {weeks.map((week, idx) => (
-          <div className="week" key={idx}>
-            {week.map((day, i) => {
-              const key = day ? `${day.getFullYear()}-${day.getMonth()}-${day.getDate()}` : null
+        {weeks.map((week, wi) => (
+          <div className="week" key={wi}>
+            {week.map((day, di) => {
+              const key = day ? toKey(day) : null
               const dayEvents = key && byDay[key] ? byDay[key] : []
               const isToday = key === todayKey
+              const isSelected = key && selectedKey === key
               return (
-                <div className={`day ${isToday ? 'today' : ''}`} key={i}>
+                <div
+                  key={di}
+                  className={`day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}`}
+                  onClick={() => day && onSelectDay && onSelectDay(day)}
+                  role={day ? 'button' : undefined}
+                  tabIndex={day ? 0 : -1}
+                  onKeyDown={(e) => { if (e.key === 'Enter') day && onSelectDay && onSelectDay(day) }}
+                >
                   {day ? <div className="date">{day.getDate()}</div> : null}
 
                   {day && (
                     <div className="day-events">
                       {dayEvents.slice(0, 3).map(ev => (
-                        <div key={ev.id} className={`event-chip ${ev.event_type || 'meeting'}`}>{ev.title}</div>
+                        <div
+                          key={ev.id}
+                          className={`event-chip ${ev.event_type || 'meeting'} ${selectedEventId === ev.id ? 'highlight' : ''}`}
+                          onClick={(e)=>{ e.stopPropagation(); onSelectEvent && onSelectEvent(ev) }}
+                          title={ev.title}
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e)=>{ if (e.key === 'Enter') { e.stopPropagation(); onSelectEvent && onSelectEvent(ev) } }}
+                        >{ev.title}</div>
                       ))}
                       {dayEvents.length > 3 && <div className="more-events">+{dayEvents.length - 3}</div>}
                     </div>

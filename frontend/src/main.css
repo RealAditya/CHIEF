@@ -50,6 +50,33 @@ body{background:var(--bg);color:var(--text-primary);overflow:hidden}
 .placeholder-event.birthday{background:var(--event-birthday)}
 .placeholder-event.reminder{background:var(--event-reminder)}
 .placeholder-event.personal{background:var(--event-personal)}
++.selected{outline:2px solid rgba(199,125,79,0.2);border-radius:6px}
++.day.selected{box-shadow:inset 0 0 0 2px rgba(199,125,79,0.08);}
++.day.selected .date{font-weight:800}
++.event-chip{cursor:pointer;padding:4px 6px;border-radius:6px;margin-top:6px;display:inline-block;color:#fff;font-weight:600;font-size:12px}
++.event-chip.highlight{outline:2px solid rgba(255,255,255,0.08)}
++.event-chip.meeting{background:var(--event-meeting)}
++.event-chip.birthday{background:var(--event-birthday)}
++.event-chip.reminder{background:var(--event-reminder)}
++.event-chip.personal{background:var(--event-personal)}
++
++.loading-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(11,15,20,0.4);backdrop-filter:blur(2px);font-weight:600}
++
++.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:40}
++.modal{background:var(--surface);padding:18px;border-radius:10px;min-width:360px;border:1px solid var(--border)}
++.modal h3{margin-top:0}
++.modal label{display:block;margin:8px 0;font-size:13px;color:var(--text-secondary)}
++.modal input,.modal textarea,.modal select{width:100%;padding:8px;margin-top:6px;border-radius:6px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text-primary)}
++.modal textarea{min-height:80px}
++.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
++.btn-cancel{background:transparent;border:1px solid var(--border);padding:8px 12px;border-radius:8px}
++.btn-primary{background:var(--accent);border:none;color:#fff;padding:8px 12px;border-radius:8px}
++
++.banner{background:#6b2222;padding:8px 12px;text-align:center;color:#fff}
++
++.icon-placeholder[disabled]{opacity:0.6;cursor:default;border:1px solid rgba(255,255,255,0.03);padding:8px 10px;border-radius:8px;background:transparent}
++.icon-placeholder{margin-left:12px}
++.today-item.selected{background:rgba(199,125,79,0.08);padding:8px;border-radius:8px}
 
 .today-area{background:var(--surface);padding:20px;border-radius:14px;display:flex;flex-direction:column;border:1px solid var(--border)}
 .today-panel h3{margin:0 0 12px 0}
