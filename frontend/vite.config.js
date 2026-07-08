@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
 
+// Minimal config: no react plugin to avoid peer dependency conflicts in some
+// environments. Vite's esbuild supports JSX for development.
 export default defineConfig({
-  plugins: [react()],
   root: '.',
 })
