@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from backend.app.api.health import router as health_router
 from backend.app.api.modules import router as modules_router
 from backend.app.api.events import router as events_router
+from backend.app.api.events_crud import router as events_crud_router
 from backend.app.core.config import get_settings
 from backend.app.core.logging import get_logger
 from backend.app.core.module_loader import loader as module_loader
@@ -60,7 +61,24 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     logger.info("shutdown")
 
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI(title="CHIEF", version="0.1.0", lifespan=lifespan)
+
+# Allow the frontend dev server origin to access the API during development
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["*"],
+)
+
 app.include_router(health_router)
 app.include_router(modules_router)
 app.include_router(events_router)
+app.include_router(events_crud_router)
