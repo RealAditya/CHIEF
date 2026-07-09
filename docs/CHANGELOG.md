@@ -11,3 +11,10 @@
 - Made single click select and double click open the Event Details modal.
 - Ensured delete always shows a confirmation dialog.
 - Added living documentation files for UI interactions, agent guidance, development status, changelog, and roadmap.
+
+### Sprint 6 — Event Interaction Preparation
+
+- Prepared dual event creation architecture with Manual Event and Smart Add buttons.
+- Added a Smart Add placeholder modal for future natural language event creation.
+- Added frontend parser example placeholders in `frontend/src/config/eventParserExamples.js`.
+- Documented that manual event creation remains the permanent fallback.

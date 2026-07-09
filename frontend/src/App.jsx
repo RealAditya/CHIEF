@@ -4,6 +4,7 @@ import Calendar from './components/Calendar'
 import TodayPanel from './components/TodayPanel'
 import CommandBar from './components/CommandBar'
 import CreateEventModal from './components/CreateEventModal'
+import SmartAddModal from './components/SmartAddModal'
 import uiText from './config/uiText'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
@@ -13,6 +14,7 @@ export default function App() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
+  const [smartAddOpen, setSmartAddOpen] = useState(false)
   const [selectedDate, setSelectedDate] = useState(() => new Date())
   const [selectedEventId, setSelectedEventId] = useState(null)
 
@@ -40,13 +42,22 @@ export default function App() {
     loadEvents()
   }, [loadEvents])
 
-  function openQuickAdd(){
+  function openManualEvent(){
     setModalEvent(null)
     setModalOpen(true)
   }
+
+  function openSmartAdd(){
+    setSmartAddOpen(true)
+  }
+
   function closeModal(){
     setModalOpen(false)
     setModalEvent(null)
+  }
+
+  function closeSmartAdd(){
+    setSmartAddOpen(false)
   }
 
   function onEventCreated(ev){
@@ -91,7 +102,10 @@ export default function App() {
         <section className="calendar-area">
           <div className="calendar-header">
             <h2>{uiText.appTitle}</h2>
-            <button className="quick-add" onClick={openQuickAdd}>+ {uiText.quickAdd}</button>
+            <div className="header-actions">
+              <button className="quick-add" onClick={openManualEvent}>+ {uiText.manualEvent}</button>
+              <button className="smart-add" onClick={openSmartAdd}>✨ {uiText.smartAdd}</button>
+            </div>
           </div>
           <Calendar
             events={events}
@@ -119,6 +133,7 @@ export default function App() {
       <CommandBar />
 
       <CreateEventModal open={modalOpen} onClose={closeModal} onCreated={onEventCreated} onDeleted={onEventDeleted} defaultDate={selectedDate} event={modalEvent} />
+      <SmartAddModal open={smartAddOpen} onClose={closeSmartAdd} />
     </div>
   )
 }

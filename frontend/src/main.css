@@ -27,6 +27,10 @@ body{background:var(--bg);color:var(--text-primary);overflow:hidden}
 .topnav .center{color:var(--text-secondary);font-weight:500}
 .topnav .icon-placeholder{margin-left:12px;padding:8px 10px;background:transparent;border:1px solid rgba(255,255,255,0.03);border-radius:8px;color:var(--text-secondary)}
 
+.header-actions{display:flex;gap:12px;align-items:center}
+.smart-add{background:rgba(199,125,79,0.1);color:var(--text-primary);border:1px solid rgba(199,125,79,0.15);padding:10px 14px;border-radius:10px;cursor:pointer;transition:background 150ms ease,border-color 150ms ease}
+.smart-add:hover{background:rgba(199,125,79,0.16)}
+
 /* Main area sized to exactly fit between header and command bar to avoid scroll */
 .main-grid{display:grid;grid-template-columns: 1fr 380px;gap:36px;padding:28px;flex:0 1 auto;height:calc(100vh - 72px - 64px);overflow:hidden}
 .calendar-area{background:var(--surface);padding:22px;border-radius:14px;min-width:0;border:1px solid var(--border)}

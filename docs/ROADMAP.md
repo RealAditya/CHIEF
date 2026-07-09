@@ -12,6 +12,7 @@
 - Sprint 6 — Event Interaction
   - Complete event viewing and editing.
   - Add delete confirmation and same-modal editing.
+  - Prepare dual creation flow with Manual Event and Smart Add placeholder.
   - Keep the event module simple and independent.
 
 - Sprint 7 — Event Lifecycle

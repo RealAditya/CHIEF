@@ -22,7 +22,14 @@
 - Sprint 6 — Event Interaction
   - Refine the event lifecycle with full view/edit/delete flows.
   - Add hover tooltips and consistent event type styling.
+  - Prepare dual event creation flow with Manual Event fallback and future Smart Add.
   - Keep the same dashboard layout and interaction model.
+
+## Notes
+
+- CHIEF now officially supports two event creation paths:
+  - Manual creation: existing modal flow, always the fallback.
+  - Future AI/NLP creation: Smart Add placeholder that will be enabled in a later sprint.
 
 ## Known issues
 
