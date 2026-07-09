@@ -1,4 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
+import TooltipPortal from './TooltipPortal'
+import uiText from '../config/uiText'
+
+function formatTime(iso) {
+  if (!iso) return ''
+  const d = new Date(iso)
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+}
 
 function generateMonthMatrix(date = new Date()) {
   const year = date.getFullYear()
@@ -41,7 +49,7 @@ function eventsByDay(events) {
   return map
 }
 
-export default function Calendar({ events = [], loading = false, selectedDate, onSelectDay, onSelectEvent, selectedEventId }) {
+export default function Calendar({ events = [], loading = false, selectedDate, onSelectDay, onHighlightEvent, onOpenEvent, selectedEventId }) {
   const weeks = generateMonthMatrix()
   const now = new Date()
   const todayKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`
@@ -54,6 +62,8 @@ export default function Calendar({ events = [], loading = false, selectedDate, o
   }
 
   const selectedKey = selectedDate ? toKey(selectedDate) : null
+  const [hovered, setHovered] = useState(null)
+  const hoveredEvent = hovered ? events.find(ev => ev.id === hovered.id) : null
 
   return (
     <div className="calendar">
@@ -86,17 +96,25 @@ export default function Calendar({ events = [], loading = false, selectedDate, o
 
                   {day && (
                     <div className="day-events">
-                      {dayEvents.slice(0, 3).map(ev => (
+                      {dayEvents.slice(0, 3).map(ev => {
+                        const start = ev.start_datetime ? new Date(ev.start_datetime) : null
+                        const timeStr = start ? start.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : ''
+                        return (
                         <div
                           key={ev.id}
                           className={`event-chip ${ev.event_type || 'meeting'} ${selectedEventId === ev.id ? 'highlight' : ''}`}
-                          onClick={(e)=>{ e.stopPropagation(); onSelectEvent && onSelectEvent(ev) }}
-                          title={ev.title}
+                          onClick={(e)=>{ e.stopPropagation(); onHighlightEvent && onHighlightEvent(ev) }}
+                          onDoubleClick={(e)=>{ e.stopPropagation(); onOpenEvent && onOpenEvent(ev) }}
                           role="button"
                           tabIndex={0}
-                          onKeyDown={(e)=>{ if (e.key === 'Enter') { e.stopPropagation(); onSelectEvent && onSelectEvent(ev) } }}
-                        >{ev.title}</div>
-                      ))}
+                          onKeyDown={(e)=>{ if (e.key === 'Enter') { e.stopPropagation(); onHighlightEvent && onHighlightEvent(ev) } }}
+                          onMouseEnter={(e)=>{ const r = e.currentTarget.getBoundingClientRect(); setHovered({id:ev.id, rect:r}) }}
+                          onMouseLeave={()=>setHovered(h=> h && h.id === ev.id ? null : h)}
+                        >
+                          {ev.title}
+                        </div>
+                        )
+                      })}
                       {dayEvents.length > 3 && <div className="more-events">+{dayEvents.length - 3}</div>}
                     </div>
                   )}
@@ -107,7 +125,15 @@ export default function Calendar({ events = [], loading = false, selectedDate, o
         ))}
       </div>
 
-      {loading && <div className="loading-overlay">Loading events...</div>}
+      {loading && <div className="loading-overlay">{uiText.loadingEvents}</div>}
+
+      {hoveredEvent && hovered && (
+        <TooltipPortal anchorRect={hovered.rect}>
+          <div style={{fontWeight:700, marginBottom:6}}>{hoveredEvent.title}</div>
+          <div style={{color:'var(--text-secondary)', fontSize:13}}>{formatTime(hoveredEvent.start_datetime)}{hoveredEvent.end_datetime ? ' • ' + formatTime(hoveredEvent.end_datetime) : ''}</div>
+          {hoveredEvent.description ? <div style={{marginTop:6, fontSize:13, color:'var(--text-secondary)'}}>{hoveredEvent.description}</div> : null}
+        </TooltipPortal>
+      )}
     </div>
   )
 }

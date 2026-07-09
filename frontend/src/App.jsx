@@ -4,6 +4,7 @@ import Calendar from './components/Calendar'
 import TodayPanel from './components/TodayPanel'
 import CommandBar from './components/CommandBar'
 import CreateEventModal from './components/CreateEventModal'
+import uiText from './config/uiText'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
 
@@ -40,15 +41,25 @@ export default function App() {
   }, [loadEvents])
 
   function openQuickAdd(){
+    setModalEvent(null)
     setModalOpen(true)
   }
   function closeModal(){
     setModalOpen(false)
+    setModalEvent(null)
   }
 
   function onEventCreated(ev){
-    // refresh events after creation
+    // refresh events after creation or edit
     loadEvents()
+    setModalEvent(null)
+    setModalOpen(false)
+  }
+
+  function onEventDeleted(id){
+    loadEvents()
+    setModalEvent(null)
+    setModalOpen(false)
   }
 
   function onSelectDay(date){
@@ -56,28 +67,39 @@ export default function App() {
     setSelectedEventId(null)
   }
 
-  function onSelectEvent(ev){
+  function onOpenEvent(ev){
     setSelectedEventId(ev.id)
     // also set selected date to the event date
     setSelectedDate(new Date(ev.start_datetime))
+    // open modal for viewing/editing
+    setModalOpen(true)
+    setModalEvent(ev)
   }
+
+  function onHighlightEvent(ev){
+    setSelectedEventId(ev.id)
+    setSelectedDate(new Date(ev.start_datetime))
+  }
+
+  const [modalEvent, setModalEvent] = useState(null)
 
   return (
     <div className="app-root">
       <TopNav />
-      {error && <div className="banner">Unable to connect to CHIEF backend.</div>}
+      {error && <div className="banner">{uiText.backendOffline}</div>}
       <main className="main-grid">
         <section className="calendar-area">
           <div className="calendar-header">
-            <h2>Monthly Calendar</h2>
-            <button className="quick-add" onClick={openQuickAdd}>+ Quick Add</button>
+            <h2>{uiText.appTitle}</h2>
+            <button className="quick-add" onClick={openQuickAdd}>+ {uiText.quickAdd}</button>
           </div>
           <Calendar
             events={events}
             loading={loading}
             selectedDate={selectedDate}
             onSelectDay={onSelectDay}
-            onSelectEvent={onSelectEvent}
+            onHighlightEvent={onHighlightEvent}
+            onOpenEvent={onOpenEvent}
             selectedEventId={selectedEventId}
           />
         </section>
@@ -88,14 +110,15 @@ export default function App() {
             loading={loading}
             selectedDate={selectedDate}
             selectedEventId={selectedEventId}
-            onSelectEvent={onSelectEvent}
+            onHighlightEvent={onHighlightEvent}
+            onOpenEvent={onOpenEvent}
           />
         </aside>
       </main>
 
       <CommandBar />
 
-      <CreateEventModal open={modalOpen} onClose={closeModal} onCreated={onEventCreated} defaultDate={selectedDate} />
+      <CreateEventModal open={modalOpen} onClose={closeModal} onCreated={onEventCreated} onDeleted={onEventDeleted} defaultDate={selectedDate} event={modalEvent} />
     </div>
   )
 }

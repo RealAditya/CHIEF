@@ -1,8 +1,9 @@
 import React from 'react'
+import uiText from '../config/uiText'
 
 function IconPlaceholder({label}){
   // intentionally disabled placeholder with tooltip
-  return <button className="icon-placeholder" title="Coming soon" disabled aria-hidden>{label}</button>
+  return <button className="icon-placeholder" title={uiText.comingSoon} disabled aria-hidden>{label}</button>
 }
 
 export default function TopNav(){
