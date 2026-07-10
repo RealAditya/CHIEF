@@ -23,7 +23,7 @@ const uiText = {
   manualEvent: 'Manual Event',
   smartAdd: 'Smart Add',
   smartAddTitle: 'Smart Add',
-  smartAddMessage: 'Natural language event creation will be available in a future sprint.',
+  smartAddMessage: 'Enter an event description (e.g. "Tomorrow 5pm team sync"). The parser will show a preview before creating the event.',
   buttonDelete: 'Delete',
   deleteConfirmTitle: 'Delete Event?',
   deleteConfirmMessage: 'Are you sure you want to delete this event? This action cannot be undone.',

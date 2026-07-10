@@ -25,6 +25,7 @@
   - Add richer event detail display and better category styling.
   - Improve event persistence feedback and stability.
   - Continue Smart Add planning while preserving manual creation as the fallback.
+  - Implement deterministic Smart Add parser foundation and integrate a parse preview before event creation.
 
 ## Future direction
 

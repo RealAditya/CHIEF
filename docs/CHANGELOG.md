@@ -19,6 +19,14 @@
 
 ## 2026-07-09
 
+### Sprint 9 — Smart Add Parser Foundation
+
+- Added deterministic, rule-based Smart Add parser backend package (backend/app/parser) and a POST /parse endpoint.
+- Integrated Smart Add modal to call the parser and show an editable preview before creating events.
+- Parser detects dates (today, tomorrow, next Monday), times (5pm, 5:30pm, noon, midnight), common date formats, simple recurrence phrases, and category hints.
+- Added unit tests for parser rules.  
+
+
 ### Sprint 5 — Event Experience Polish
 
 - Locked dashboard heading terminology to "Your Month".

@@ -7,6 +7,7 @@ from backend.app.api.health import router as health_router
 from backend.app.api.modules import router as modules_router
 from backend.app.api.events import router as events_router
 from backend.app.api.events_crud import router as events_crud_router
+from backend.app.api.parser_api import router as parser_router
 from backend.app.core.config import get_settings
 from backend.app.core.logging import get_logger
 from backend.app.core.module_loader import loader as module_loader
@@ -82,3 +83,4 @@ app.include_router(health_router)
 app.include_router(modules_router)
 app.include_router(events_router)
 app.include_router(events_crud_router)
+app.include_router(parser_router)

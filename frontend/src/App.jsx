@@ -216,7 +216,7 @@ export default function App() {
       <CommandBar />
 
       <CreateEventModal open={modalOpen} onClose={closeModal} onCreated={onEventCreated} onDeleted={onEventDeleted} defaultDate={selectedDate} event={modalEvent} />
-      <SmartAddModal open={smartAddOpen} onClose={closeSmartAdd} />
+      <SmartAddModal open={smartAddOpen} onClose={closeSmartAdd} onCreate={onEventCreated} />
     </div>
   )
 }
