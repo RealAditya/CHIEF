@@ -75,18 +75,34 @@ body{background:var(--bg);color:var(--text-primary);overflow:hidden}
 .day{min-height:0;padding:10px;background:transparent;border-radius:14px;position:relative;height:100%;overflow:hidden;transition:background 150ms ease,border-color 150ms ease,transform 150ms ease}
 .day.empty{background:transparent}
 .day:hover{background:rgba(255,255,255,0.02)}
+/* weekend tint applied to full weekend columns via per-day weekend class */
 .day.weekend{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04)}
 .day .date{font-size:18px;font-weight:700;color:var(--text-primary)}
 .day.today{background:var(--accent);color:#fff;border-radius:14px;padding:10px;box-shadow:0 2px 8px rgba(0,0,0,0.25)}
 .day.today .date{color:#fff}
 .day.selected{box-shadow:inset 0 0 0 2px rgba(199,125,79,0.08)}
 .day.selected .date{font-weight:800}
-.event-chip{cursor:pointer;padding:8px 10px;border-radius:12px;margin-top:12px;display:flex;flex-direction:column;gap:4px;color:var(--text-primary);font-weight:600;font-size:12px;position:relative;border-left:4px solid transparent;transition:transform 150ms ease, box-shadow 150ms ease, background 150ms ease}
+
+/* Ensure event chips have a consistent measured height so we can compute how many fit */
+.event-chip{height:36px;box-sizing:border-box;cursor:pointer;padding:8px 10px;border-radius:12px;margin-top:10px;display:flex;align-items:flex-start;gap:8px;color:var(--text-primary);font-weight:600;font-size:12px;position:relative;border-left:4px solid transparent;transition:transform 150ms ease, box-shadow 150ms ease, background 150ms ease}
 .event-chip:hover{transform:translateY(-1px)}
 .event-chip.highlight{box-shadow:0 0 0 2px rgba(255,255,255,0.16);}
 .event-chip-time{font-size:11px;color:var(--text-secondary);letter-spacing:0.02em}
-.event-chip-title{line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.more-events{margin-top:10px;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,0.06);color:var(--text-primary);font-size:12px;font-weight:700;border:none;width:100%;text-align:left}
+.event-chip-title{line-height:1.1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.more-events{margin-top:6px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.02);color:var(--text-primary);font-size:12px;font-weight:700;border:none;width:100%;text-align:left;display:flex;align-items:center;justify-content:flex-start;gap:8px}
+.more-dots{opacity:0.9}
+.more-dot{width:10px;height:10px;border-radius:999px;display:inline-block}
+.more-popover{width:320px;display:flex;flex-direction:column;gap:10px}
+.more-popover-title{font-size:13px;font-weight:700;color:var(--text-secondary)}
+.more-popover-list{display:flex;flex-direction:column;gap:8px}
+.more-popover-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);color:var(--text-primary);text-align:left}
+.more-popover-time{font-size:12px;color:var(--text-secondary);min-width:50px}
+.more-popover-description{display:flex;align-items:center;gap:8px;flex:1;overflow:hidden}
+.more-popover-description span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.event-category-dot{width:10px;height:10px;border-radius:999px;display:inline-block}
+.category-indicator{width:10px;height:10px;border-radius:999px;display:inline-block}
+.day.outside-month{opacity:0.48}
 .more-popover{width:320px;display:flex;flex-direction:column;gap:10px}
 .more-popover-title{font-size:13px;font-weight:700;color:var(--text-secondary)}
 .more-popover-list{display:flex;flex-direction:column;gap:8px}

@@ -9,11 +9,13 @@
 - Sprint 5: Event experience polish, tooltip behavior, selection/edit flow, and UI text configuration.
 - Sprint 7: Calendar experience stabilization, manual event creation workflow, backend validation, and CRUD lifecycle confirmation.
 - Sprint 8: Calendar navigation, month/year selection, week view toggle, weekend styling, event chip polish, and keyboard shortcuts.
+- Sprint 8.1: Calendar layout refinement — fixed 6x7 grid, stable day cell height, overflow handling, and weekend column tinting.
 
 ## Current status
 
 - CHIEF has reached the v0.1.0-alpha milestone as the first usable version.
 - The calendar now supports navigation controls and a cleaner desktop-like event presentation.
+- Layout refinements ensure the calendar always fits perfectly in the viewport and events do not resize the grid.
 - Keyboard shortcuts are added for creating events, returning to today, and moving between periods.
 
 ## Next sprint

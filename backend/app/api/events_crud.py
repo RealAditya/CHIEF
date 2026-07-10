@@ -19,9 +19,11 @@ class EventIn(BaseModel):
     title: str = Field(..., max_length=255)
     description: str | None = None
     start_datetime: datetime
-    end_datetime: datetime
+    end_datetime: datetime | None = None
     event_type: str = Field(...)
-    priority: int = 0
+    category: str = Field("other")
+    priority: str = Field("normal")
+    completed: bool = False
     location: str | None = None
     notes: str | None = None
 
@@ -54,7 +56,9 @@ def create_event(payload: EventIn, db: Session = Depends(get_db)):
         start_datetime=payload.start_datetime,
         end_datetime=payload.end_datetime,
         event_type=payload.event_type,
+        category=payload.category,
         priority=payload.priority,
+        completed=payload.completed,
         location=payload.location,
         notes=payload.notes,
     )
@@ -77,7 +81,9 @@ def update_event(event_id: UUID, payload: EventIn, db: Session = Depends(get_db)
     ev.start_datetime = payload.start_datetime
     ev.end_datetime = payload.end_datetime
     ev.event_type = payload.event_type
+    ev.category = payload.category
     ev.priority = payload.priority
+    ev.completed = payload.completed
     ev.location = payload.location
     ev.notes = payload.notes
 

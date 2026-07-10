@@ -18,32 +18,27 @@ function toKey(d) {
   return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
 }
 
+// Always produce a full 6x7 grid including previous/next month days
 function generateMonthMatrix(date) {
   const year = date.getFullYear()
   const month = date.getMonth()
 
-  const first = new Date(year, month, 1)
-  const last = new Date(year, month + 1, 0)
-
-  const startDay = first.getDay()
-  const daysInMonth = last.getDate()
+  // start from the Sunday of the week that contains the 1st
+  const start = new Date(year, month, 1)
+  start.setDate(start.getDate() - start.getDay())
 
   const weeks = []
-  let week = new Array(7).fill(null)
-  let day = 1
+  let day = new Date(start)
 
-  for (let i = startDay; i < 7; i++) week[i] = new Date(year, month, day++)
-  weeks.push(week)
-
-  while (day <= daysInMonth) {
-    week = new Array(7).fill(null)
-    for (let i = 0; i < 7 && day <= daysInMonth; i++) {
-      week[i] = new Date(year, month, day++)
+  for (let w = 0; w < 6; w++) {
+    const week = []
+    for (let d = 0; d < 7; d++) {
+      week.push(new Date(day.getFullYear(), day.getMonth(), day.getDate()))
+      day.setDate(day.getDate() + 1)
     }
     weeks.push(week)
   }
 
-  while (weeks.length < 6) weeks.push(new Array(7).fill(null))
   return weeks
 }
 
@@ -100,6 +95,28 @@ export default function Calendar({
   const currentLabel = `${monthNames[referenceDate.getMonth()]} ${referenceDate.getFullYear()}`
   const yearOptions = Array.from({ length: 9 }, (_, i) => referenceDate.getFullYear() - 4 + i)
   const isPickerOpen = Boolean(picker)
+
+  const weeksRef = useRef(null)
+  const [visibleCount, setVisibleCount] = useState(3)
+
+  useEffect(() => {
+    // Measure weeks container and calculate how many event chips fit per day cell
+    function calculate() {
+      if (!weeksRef.current) return
+      const totalHeight = weeksRef.current.clientHeight || 0
+      const cellHeight = Math.floor(totalHeight / 6)
+      const DATE_HEADER_HEIGHT = 28
+      const CHIP_HEIGHT = 36
+      const CHIP_GAP = 8
+      const available = Math.max(0, cellHeight - DATE_HEADER_HEIGHT - 12) // padding
+      const count = Math.max(0, Math.floor((available + CHIP_GAP) / (CHIP_HEIGHT + CHIP_GAP)))
+      setVisibleCount(count)
+    }
+
+    calculate()
+    window.addEventListener('resize', calculate)
+    return () => window.removeEventListener('resize', calculate)
+  }, [viewMode])
 
   useEffect(() => {
     function handleOutsideClick(event) {
@@ -210,19 +227,31 @@ export default function Calendar({
         ))}
       </div>
 
-      <div className="weeks">
+      <div className="weeks" ref={weeksRef}>
         {weeks.map((week, wi) => (
           <div className="week" key={wi}>
             {week.map((day, di) => {
               const key = day ? toKey(day) : null
-              const dayEvents = key && byDay[key] ? byDay[key] : []
+              const dayEvents = key && byDay[key] ? byDay[key].slice().sort((a, b) => {
+                const tA = a.start_datetime ? new Date(a.start_datetime).getTime() : 0
+                const tB = b.start_datetime ? new Date(b.start_datetime).getTime() : 0
+                if (tA !== tB) return tA - tB
+                const pA = (a.priority != null) ? a.priority : 0
+                const pB = (b.priority != null) ? b.priority : 0
+                if (pA !== pB) return pB - pA // higher priority first
+                return (a.title || '').localeCompare(b.title || '')
+              }) : []
               const isToday = key === todayKey
               const isSelected = key && selectedKey === key
               const isWeekend = day && (day.getDay() === 0 || day.getDay() === 6)
+              const outsideMonth = day && day.getMonth() !== referenceDate.getMonth()
+              const visible = visibleCount > 0 ? dayEvents.slice(0, visibleCount) : []
+              const hidden = dayEvents.length > visible.length ? dayEvents.slice(visible.length) : []
+
               return (
                 <div
                   key={di}
-                  className={`day ${day ? '' : 'empty'} ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''} ${isWeekend ? 'weekend' : ''}`}
+                  className={`day ${day ? '' : 'empty'} ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''} ${isWeekend ? 'weekend' : ''} ${outsideMonth ? 'outside-month' : ''}`}
                   style={isWeekend ? { background: colors.weekendBackground, borderColor: colors.weekendBorder } : undefined}
                   onClick={() => day && onSelectDay && onSelectDay(day)}
                   role={day ? 'button' : undefined}
@@ -233,17 +262,24 @@ export default function Calendar({
 
                   {day && (
                     <div className="day-events">
-                      {dayEvents.slice().sort((a, b) => new Date(a.start_datetime) - new Date(b.start_datetime)).slice(0, 3).map(renderEventChip)}
-                      {dayEvents.length > 3 && (
+                      {visible.map(renderEventChip)}
+
+                      {hidden.length > 0 && (
                         <button
                           type="button"
                           className="more-events"
                           onClick={(e) => {
                             e.stopPropagation()
-                            openMore(key, dayEvents.slice(3), e.currentTarget.getBoundingClientRect())
+                            openMore(key, hidden, e.currentTarget.getBoundingClientRect())
                           }}
                         >
-                          +{dayEvents.length - 3} more
+                          <span className="more-dots">• • •</span>
+                          <span style={{marginLeft:8}}>+{hidden.length} more</span>
+                          <span style={{marginLeft:8, display:'inline-flex', gap:6}}>
+                            {hidden.slice(0,5).map(h => (
+                              <span key={h.id} className="more-dot" style={{background: (eventCategoryMap[h.category] ?? eventCategoryMap.other).color}} />
+                            ))}
+                          </span>
                         </button>
                       )}
                     </div>
