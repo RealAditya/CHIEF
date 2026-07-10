@@ -7,23 +7,20 @@
 - Sprint 3: Frontend dashboard shell and visual identity.
 - Sprint 4: Event persistence, backend CRUD, and frontend event integration.
 - Sprint 5: Event experience polish, tooltip behavior, selection/edit flow, and UI text configuration.
+- Sprint 7: Calendar experience stabilization, manual event creation workflow, backend validation, and CRUD lifecycle confirmation.
 
-## Current sprint
+## Current status
 
-- Sprint 5 — Event Experience Polish
-  - Locked dashboard terminology.
-  - Moved user-facing text into `frontend/src/config/uiText.js`.
-  - Polished event tooltip behavior and selection states.
-  - Ensured double click opens the edit modal.
-  - Confirmed delete requires user confirmation.
+- CHIEF has reached the v0.1.0-alpha milestone as the first usable version.
+- The dashboard shell supports manual event creation, editing, deletion, and persistent event storage.
+- The core calendar event flow is stable and documented for future sprint planning.
 
 ## Next sprint
 
-- Sprint 6 — Event Interaction
-  - Refine the event lifecycle with full view/edit/delete flows.
-  - Add hover tooltips and consistent event type styling.
-  - Prepare dual event creation flow with Manual Event fallback and future Smart Add.
-  - Keep the same dashboard layout and interaction model.
+- Sprint 8 — Calendar Feature Expansion
+  - Add recurring events and reminders.
+  - Introduce authentication and persistence hardening.
+  - Continue Smart Add planning while preserving simplicity and privacy.
 
 ## Notes
 

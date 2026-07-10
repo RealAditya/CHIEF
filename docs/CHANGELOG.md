@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.1.0-alpha
+
+- First usable version of CHIEF completed.
+- Finalized Sprint 7 calendar experience stabilization and validated the first working event lifecycle.
+- Backend event CRUD now persists create, edit, and delete operations with stable validation.
+- Frontend dashboard shell supports manual event creation, editing, deletion, and confirmation flows.
+- Added milestone documentation and updated status and roadmap to reflect the release readiness.
+
 ## 2026-07-09
 
 ### Sprint 5 — Event Experience Polish

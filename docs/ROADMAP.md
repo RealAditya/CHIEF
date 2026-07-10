@@ -1,24 +1,24 @@
 # CHIEF Roadmap
 
+## Completed work
+
+- Sprint 7 — Calendar Experience Stabilization
+  - Stabilized manual event creation in the frontend modal.
+  - Finalized backend event validation and persistence for optional end times.
+  - Confirmed create, edit, delete, and reload lifecycle for events.
+  - Preserved the dashboard shell and core calendar module without adding drag & drop, recurring events, reminders, or AI.
+
 ## Current focus
 
-- Sprint 5 — Event Experience Polish
-  - Finish event interaction behavior and UI polish.
-  - Keep the dashboard layout stable.
-  - Improve tooltip behavior and empty states.
+- Release v0.1.0-alpha milestone and baseline calendar stability.
+- Document the completed event lifecycle and prepare the project for broader feature expansion.
 
 ## Next priorities
 
-- Sprint 6 — Event Interaction
-  - Complete event viewing and editing.
-  - Add delete confirmation and same-modal editing.
-  - Prepare dual creation flow with Manual Event and Smart Add placeholder.
-  - Keep the event module simple and independent.
-
-- Sprint 7 — Event Lifecycle
-  - Add event detail display.
-  - Improve event type consistency.
-  - Preserve the core module and event-driven architecture.
+- Sprint 8 — Calendar Feature Expansion
+  - Add recurring events and reminders.
+  - Improve event type styling and detail display.
+  - Continue Smart Add planning while preserving manual creation as the fallback.
 
 ## Future direction
 
