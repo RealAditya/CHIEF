@@ -30,6 +30,7 @@
 - Implemented deterministic Smart Add parser backend package and parser API endpoint.
 - Integrated Smart Add modal to call the parser and preview parsed fields before event creation.
 - Parser is rule-based and intentionally independent from the Event module for reuse.
+- Exposed a backend POST /parse endpoint for Smart Add preview (does not create events).
 
 ## Notes
 
