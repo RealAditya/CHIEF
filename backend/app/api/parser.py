@@ -23,7 +23,7 @@ class ParseResponse(BaseModel):
     all_day: bool
     confidence: float
     warnings: list[str]
-    recurrenceDetected: bool
+    recurrence: str | None
 
 
 @router.post("/parse", response_model=ParseResponse)
@@ -35,10 +35,10 @@ def parse_endpoint(payload: ParseRequest):
         'description': data.get('description'),
         'start_datetime': data.get('start_datetime'),
         'end_datetime': data.get('end_datetime'),
-        'category': data.get('category', 'other'),
+        'category': data.get('category', 'general'),
         'priority': data.get('priority', 'normal'),
         'all_day': data.get('all_day', False),
         'confidence': data.get('confidence', 0.0),
         'warnings': data.get('warnings', []),
-        'recurrenceDetected': data.get('recurrenceDetected', False),
+        'recurrence': data.get('recurrence'),
     }

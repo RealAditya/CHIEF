@@ -26,6 +26,13 @@
 - Parser detects dates (today, tomorrow, next Monday), times (5pm, 5:30pm, noon, midnight), common date formats, simple recurrence phrases, and category hints.
 - Added unit tests for parser rules.
 - Exposed POST /parse endpoint to preview parsed events without creating them.
+- **Sprint 9 (refactored)** — Implemented modular parser architecture:
+  - Separated parsing concerns: normalizer, dates, time, duration, recurrence, category, priority, title, confidence.
+  - Created backend/app/config/parser_defaults.py for configurable defaults (time-of-day, categories, weekdays, months, priorities).
+  - Each parser component is independently testable and maintainable.
+  - Parser handles abbreviations (tom→tomorrow, nxt→next, etc.), multiple date formats, natural language times, and recurrence detection.
+  - Confidence scoring and warnings system for parsing completeness and accuracy.
+
 
 
 

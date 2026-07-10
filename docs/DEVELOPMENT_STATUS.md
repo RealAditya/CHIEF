@@ -27,10 +27,13 @@
 
 ### Sprint 9 (in-progress)
 
-- Implemented deterministic Smart Add parser backend package and parser API endpoint.
-- Integrated Smart Add modal to call the parser and preview parsed fields before event creation.
-- Parser is rule-based and intentionally independent from the Event module for reuse.
-- Exposed a backend POST /parse endpoint for Smart Add preview (does not create events).
+- Implemented deterministic Smart Add parser backend package with modular architecture.
+- Parser components: normalizer (abbreviations), dates, time, duration, recurrence, category, priority, title, confidence.
+- Created backend/app/config/parser_defaults.py for configurable keywords and defaults.
+- Exposed POST /parse endpoint for parsing preview (no event creation).
+- Integrated Smart Add modal to display parsed fields before event creation.
+- Parser returns: title, description, start_datetime, end_datetime, category, priority, recurrence, confidence, warnings.
+- Confidence scoring and warnings help users identify incomplete or inferred fields.
 
 ## Notes
 
