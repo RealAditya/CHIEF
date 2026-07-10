@@ -9,12 +9,17 @@ export default function SmartAddModal({ open, onClose, onCreate }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
+  const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
+
   async function doParse() {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch('/parse', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) })
-      if (!res.ok) throw new Error('Parse failed')
+      const res = await fetch(`${API_BASE}/parse`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) })
+      if (!res.ok) {
+        const txt = await res.text().catch(() => '')
+        throw new Error(txt || 'Parse failed')
+      }
       const data = await res.json()
       setParsed(data)
     } catch (err) {
@@ -37,8 +42,11 @@ export default function SmartAddModal({ open, onClose, onCreate }) {
         category: parsed.category || 'other',
         priority: parsed.priority || 'normal',
       }
-      const res = await fetch('/events', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-      if (!res.ok) throw new Error('Create failed')
+      const res = await fetch(`${API_BASE}/events`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+      if (!res.ok) {
+        const txt = await res.text().catch(() => '')
+        throw new Error(txt || 'Create failed')
+      }
       const created = await res.json()
       if (onCreate) onCreate(created)
       onClose()
