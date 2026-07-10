@@ -22,7 +22,7 @@ body{background:var(--bg);color:var(--text-primary);overflow:hidden}
 /* App layout fixed to viewport to prevent page scrolling */
 .app-root{height:100vh;display:flex;flex-direction:column}
 
-.topnav{display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 36px;background:transparent;border-bottom:1px solid rgba(255,255,255,0.04)}
+.topnav{display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 32px;background:transparent;border-bottom:1px solid rgba(255,255,255,0.04)}
 .topnav .logo{font-weight:800;font-size:26px;font-family:'Orbitron', sans-serif;letter-spacing:1.5px}
 .topnav .center{color:var(--text-secondary);font-weight:500}
 .topnav .icon-placeholder{margin-left:12px;padding:8px 10px;background:transparent;border:1px solid rgba(255,255,255,0.03);border-radius:8px;color:var(--text-secondary)}
@@ -32,7 +32,7 @@ body{background:var(--bg);color:var(--text-primary);overflow:hidden}
 .smart-add:hover{background:rgba(199,125,79,0.16)}
 
 /* Main area sized to exactly fit between header and command bar to avoid scroll */
-.main-grid{display:grid;grid-template-columns: 1fr 380px;gap:36px;padding:28px;flex:0 1 auto;height:calc(100vh - 72px - 64px);overflow:hidden}
+.main-grid{display:grid;grid-template-columns: 1fr 360px;gap:28px;padding:20px;flex:0 1 auto;height:calc(100vh - 64px - 56px);overflow:hidden}
 .calendar-area{background:var(--surface);padding:22px;border-radius:14px;min-width:0;border:1px solid var(--border)}
 .calendar-area:hover{background:var(--surface-hover)}
 .calendar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
@@ -68,11 +68,11 @@ body{background:var(--bg);color:var(--text-primary);overflow:hidden}
 .picker-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .year-grid{grid-template-columns:repeat(4,1fr)}
 .picker-option{background:transparent;text-align:left}
-.weekdays{display:grid;grid-template-columns:repeat(7,1fr);color:var(--text-secondary);font-size:15px;font-weight:700;height:34px;align-items:center;padding:0}
+.weekdays{display:grid;grid-template-columns:repeat(7,1fr);color:var(--text-secondary);font-size:14px;font-weight:700;height:30px;align-items:center;padding:0}
 /* weeks constrained to 6 equal rows so the calendar grid never grows taller than its container */
-.weeks{display:grid;grid-template-rows:repeat(6,1fr);gap:12px;flex:1;overflow:hidden}
-.week{display:grid;grid-template-columns:repeat(7,1fr);gap:12px}
-.day{min-height:0;padding:10px;background:transparent;border-radius:14px;position:relative;height:100%;overflow:hidden;transition:background 150ms ease,border-color 150ms ease,transform 150ms ease}
+.weeks{display:grid;grid-template-rows:repeat(6,1fr);gap:10px;flex:1;overflow:hidden}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.day{min-height:0;padding:8px;background:transparent;border-radius:12px;position:relative;height:100%;overflow:hidden;transition:background 150ms ease,border-color 150ms ease,transform 150ms ease}
 .day.empty{background:transparent}
 .day:hover{background:rgba(255,255,255,0.02)}
 /* weekend tint applied to full weekend columns via per-day weekend class */
@@ -84,13 +84,13 @@ body{background:var(--bg);color:var(--text-primary);overflow:hidden}
 .day.selected .date{font-weight:800}
 
 /* Ensure event chips have a consistent measured height so we can compute how many fit */
-.event-chip{height:36px;box-sizing:border-box;cursor:pointer;padding:8px 10px;border-radius:12px;margin-top:10px;display:flex;align-items:flex-start;gap:8px;color:var(--text-primary);font-weight:600;font-size:12px;position:relative;border-left:4px solid transparent;transition:transform 150ms ease, box-shadow 150ms ease, background 150ms ease}
+.event-chip{height:30px;box-sizing:border-box;cursor:pointer;padding:6px 8px;border-radius:10px;margin-top:8px;display:flex;align-items:flex-start;gap:8px;color:var(--text-primary);font-weight:600;font-size:12px;position:relative;border-left:4px solid transparent;transition:transform 150ms ease, box-shadow 150ms ease, background 150ms ease}
 .event-chip:hover{transform:translateY(-1px)}
 .event-chip.highlight{box-shadow:0 0 0 2px rgba(255,255,255,0.16);}
 .event-chip-time{font-size:11px;color:var(--text-secondary);letter-spacing:0.02em}
 .event-chip-title{line-height:1.1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-.more-events{margin-top:6px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.02);color:var(--text-primary);font-size:12px;font-weight:700;border:none;width:100%;text-align:left;display:flex;align-items:center;justify-content:flex-start;gap:8px}
+.more-events{margin-top:4px;padding:6px 8px;border-radius:10px;background:rgba(255,255,255,0.02);color:var(--text-primary);font-size:12px;font-weight:700;border:none;width:100%;text-align:left;display:flex;align-items:center;justify-content:flex-start;gap:8px}
 .more-dots{opacity:0.9}
 .more-dot{width:10px;height:10px;border-radius:999px;display:inline-block}
 .more-popover{width:320px;display:flex;flex-direction:column;gap:10px}
@@ -116,7 +116,7 @@ body{background:var(--bg);color:var(--text-primary);overflow:hidden}
 /* Portal-rendered tooltip (appears in document.body via portal) */
 .portal-tooltip{background:var(--surface);border:1px solid var(--border);padding:12px;border-radius:12px;min-width:220px;box-shadow:0 10px 30px rgba(0,0,0,0.6);color:var(--text-primary)}
 
-.today-item{display:flex;gap:12px;align-items:center;position:relative;padding:8px;border-radius:8px;transition:background 150ms ease, transform 150ms ease}
+.today-item{display:flex;gap:10px;align-items:center;position:relative;padding:6px;border-radius:8px;transition:background 150ms ease, transform 150ms ease}
 .today-item:hover{background:rgba(255,255,255,0.04);transform:translateY(-1px)}
 .today-item.selected{background:rgba(199,125,79,0.12);border-left:3px solid var(--accent);}
 
@@ -156,14 +156,14 @@ body{background:var(--bg);color:var(--text-primary);overflow:hidden}
 .icon-placeholder{margin-left:12px}
 .today-item.selected{background:rgba(199,125,79,0.08);padding:8px;border-radius:8px}
 
-.today-area{background:var(--surface);padding:20px;border-radius:14px;display:flex;flex-direction:column;border:1px solid var(--border)}
+.today-area{background:var(--surface);padding:16px;border-radius:14px;display:flex;flex-direction:column;border:1px solid var(--border)}
 .today-panel h3{margin:0 0 12px 0}
 .today-list{display:flex;flex-direction:column;gap:12px}
 .today-item{display:flex;gap:12px;align-items:center}
 .time{color:var(--text-secondary);min-width:60px}
 .title{font-weight:600;color:var(--text-primary)}
 
-.command-bar{height:64px;flex:0 0 64px;background:transparent;display:flex;align-items:center;padding:12px 24px;border-top:1px solid rgba(255,255,255,0.03)}
+.command-bar{height:56px;flex:0 0 56px;background:transparent;display:flex;align-items:center;padding:10px 20px;border-top:1px solid rgba(255,255,255,0.03)}
 .command-bar .prompt{color:var(--text-secondary);margin-right:12px;font-family:'Space Grotesk';font-weight:600}
 .cmd-input{flex:1;background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--text-secondary);padding:12px 14px;border-radius:8px}
 .cmd-input:disabled{opacity:0.95}

@@ -105,17 +105,20 @@ export default function Calendar({
       if (!weeksRef.current) return
       const totalHeight = weeksRef.current.clientHeight || 0
       const cellHeight = Math.floor(totalHeight / 6)
-      const DATE_HEADER_HEIGHT = 28
-      const CHIP_HEIGHT = 36
-      const CHIP_GAP = 8
-      const available = Math.max(0, cellHeight - DATE_HEADER_HEIGHT - 12) // padding
+      const DATE_HEADER_HEIGHT = 24 // slightly reduced header
+      const CHIP_HEIGHT = 30 // reduced chip height to compact layout
+      const CHIP_GAP = 6 // smaller vertical gap between chips
+      const available = Math.max(0, cellHeight - DATE_HEADER_HEIGHT - 10) // padding
       const count = Math.max(0, Math.floor((available + CHIP_GAP) / (CHIP_HEIGHT + CHIP_GAP)))
       setVisibleCount(count)
     }
 
     calculate()
-    window.addEventListener('resize', calculate)
-    return () => window.removeEventListener('resize', calculate)
+    // debounce resize to avoid thrash
+    let raf = null
+    function onResize(){ if (raf) cancelAnimationFrame(raf); raf = requestAnimationFrame(calculate) }
+    window.addEventListener('resize', onResize)
+    return () => { window.removeEventListener('resize', onResize); if (raf) cancelAnimationFrame(raf) }
   }, [viewMode])
 
   useEffect(() => {
