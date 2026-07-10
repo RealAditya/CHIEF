@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import uiText from '../config/uiText'
+import { eventCategories } from '../config/eventCategories'
 
 const EVENT_TYPES = ['meeting','birthday','task','travel','reminder']
 const EVENT_LABELS = {
@@ -9,6 +10,12 @@ const EVENT_LABELS = {
   travel: 'Travel',
   reminder: 'Reminder'
 }
+const PRIORITY_OPTIONS = [
+  { id: 'low', label: 'Low' },
+  { id: 'normal', label: 'Normal' },
+  { id: 'high', label: 'High' },
+]
+const DEFAULT_CATEGORY = 'other'
 
 export default function CreateEventModal({ open, onClose, onCreated, defaultDate, event = null, onDeleted }){
   const titleRef = useRef(null)
@@ -20,7 +27,10 @@ export default function CreateEventModal({ open, onClose, onCreated, defaultDate
     description: '',
     start_datetime: defaultDate ? new Date(defaultDate).toISOString().slice(0,16) : '',
     end_datetime: '',
-    event_type: 'meeting'
+    event_type: 'meeting',
+    category: DEFAULT_CATEGORY,
+    priority: 'normal',
+    completed: false,
   })
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
@@ -35,10 +45,22 @@ export default function CreateEventModal({ open, onClose, onCreated, defaultDate
           description: event.description || '',
           start_datetime: event.start_datetime ? event.start_datetime.slice(0,16) : (defaultDate ? new Date(defaultDate).toISOString().slice(0,16) : ''),
           end_datetime: event.end_datetime ? event.end_datetime.slice(0,16) : '',
-          event_type: event.event_type || 'meeting'
+          event_type: event.event_type || 'meeting',
+          category: event.category || DEFAULT_CATEGORY,
+          priority: event.priority || 'normal',
+          completed: event.completed != null ? event.completed : false,
         })
       } else {
-        setForm({title: '', description: '', start_datetime: defaultDate ? new Date(defaultDate).toISOString().slice(0,16) : '', end_datetime: '', event_type: 'meeting'})
+        setForm({
+          title: '',
+          description: '',
+          start_datetime: defaultDate ? new Date(defaultDate).toISOString().slice(0,16) : '',
+          end_datetime: '',
+          event_type: 'meeting',
+          category: DEFAULT_CATEGORY,
+          priority: 'normal',
+          completed: false,
+        })
       }
       setErrors({})
     }
@@ -82,31 +104,30 @@ export default function CreateEventModal({ open, onClose, onCreated, defaultDate
     try{
       const urlBase = (import.meta.env.VITE_API_URL ?? 'http://localhost:8000') + '/events'
       let res
+      const payload = {
+        title: form.title,
+        description: form.description,
+        start_datetime: new Date(form.start_datetime).toISOString(),
+        end_datetime: form.end_datetime ? new Date(form.end_datetime).toISOString() : null,
+        event_type: form.event_type,
+        category: form.category,
+        priority: form.priority,
+        completed: form.completed,
+      }
+
       if (event && event.id) {
         // edit existing
         res = await fetch(`${urlBase}/${event.id}`, {
           method: 'PUT',
           headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({
-            title: form.title,
-            description: form.description,
-            start_datetime: new Date(form.start_datetime).toISOString(),
-            end_datetime: form.end_datetime ? new Date(form.end_datetime).toISOString() : null,
-            event_type: form.event_type
-          })
+          body: JSON.stringify(payload)
         })
       } else {
         // create new
         res = await fetch(urlBase, {
           method: 'POST',
           headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({
-            title: form.title,
-            description: form.description,
-            start_datetime: new Date(form.start_datetime).toISOString(),
-            end_datetime: form.end_datetime ? new Date(form.end_datetime).toISOString() : null,
-            event_type: form.event_type
-          })
+          body: JSON.stringify(payload)
         })
       }
 
@@ -193,6 +214,47 @@ export default function CreateEventModal({ open, onClose, onCreated, defaultDate
               ))}
             </div>
             {errors.event_type && <div className="field-error">{errors.event_type}</div>}
+          </div>
+
+          <div className="form-row split">
+            <div className="col">
+              <label className="form-label">{uiText.labelCategory}</label>
+              <div className="chips-row" role="tablist" aria-label={uiText.labelCategory}>
+                {eventCategories.map(cat => (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    className={`chip ${form.category === cat.id ? 'chip-selected' : ''}`}
+                    style={{ background: form.category === cat.id ? cat.color : '#20222D', borderColor: form.category === cat.id ? cat.color : '#34374A' }}
+                    onClick={() => updateField('category', cat.id)}
+                  ><span className="category-indicator" style={{ background: cat.color }} /> {cat.name}</button>
+                ))}
+              </div>
+            </div>
+            <div className="col">
+              <label className="form-label">{uiText.labelPriority}</label>
+              <div className="chips-row" role="tablist" aria-label={uiText.labelPriority}>
+                {PRIORITY_OPTIONS.map(option => (
+                  <button
+                    key={option.id}
+                    type="button"
+                    className={`chip ${form.priority === option.id ? 'chip-selected' : ''}`}
+                    onClick={() => updateField('priority', option.id)}
+                  >{option.label}</button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="form-row">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={form.completed}
+                onChange={(e) => updateField('completed', e.target.checked)}
+              />
+              {uiText.labelCompleted}
+            </label>
           </div>
 
           {errors.__form && <div className="form-error">{errors.__form}</div>}

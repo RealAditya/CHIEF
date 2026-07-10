@@ -8,16 +8,17 @@
 - Sprint 4: Event persistence, backend CRUD, and frontend event integration.
 - Sprint 5: Event experience polish, tooltip behavior, selection/edit flow, and UI text configuration.
 - Sprint 7: Calendar experience stabilization, manual event creation workflow, backend validation, and CRUD lifecycle confirmation.
+- Sprint 8: Calendar navigation, month/year selection, week view toggle, weekend styling, event chip polish, and keyboard shortcuts.
 
 ## Current status
 
 - CHIEF has reached the v0.1.0-alpha milestone as the first usable version.
-- The dashboard shell supports manual event creation, editing, deletion, and persistent event storage.
-- The core calendar event flow is stable and documented for future sprint planning.
+- The calendar now supports navigation controls and a cleaner desktop-like event presentation.
+- Keyboard shortcuts are added for creating events, returning to today, and moving between periods.
 
 ## Next sprint
 
-- Sprint 8 — Calendar Feature Expansion
+- Sprint 9 — Calendar Feature Expansion
   - Add recurring events and reminders.
   - Introduce authentication and persistence hardening.
   - Continue Smart Add planning while preserving simplicity and privacy.

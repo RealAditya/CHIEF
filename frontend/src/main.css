@@ -38,32 +38,64 @@ body{background:var(--bg);color:var(--text-primary);overflow:hidden}
 .calendar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
 .quick-add{background:transparent;color:var(--text-primary);border:1px solid var(--border);padding:10px 14px;border-radius:10px;cursor:pointer}
 
-.calendar{display:flex;flex-direction:column;height:100%}
-.month-title{font-size:36px;font-weight:800;margin:0 0 8px;color:var(--text-primary)}
-.weekdays{display:grid;grid-template-columns:repeat(7,1fr);color:var(--text-secondary);font-size:18px;font-weight:800;height:36px;align-items:center;padding:0}
+.calendar{display:flex;flex-direction:column;height:100%;position:relative}
+.calendar-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.calendar-navigation{display:flex;align-items:center;gap:8px}
+.nav-button,
+.today-button,
+.toggle-button,
+.calendar-title-item,
+.picker-option,
+.more-popover-item{cursor:pointer}
+.nav-button,
+.today-button,
+.toggle-button,
+.calendar-title-item,
+.picker-option{border:1px solid rgba(255,255,255,0.08);border-radius:10px;background:rgba(255,255,255,0.03);color:var(--text-primary);padding:10px 12px;font-size:13px;transition:background 150ms ease,border-color 150ms ease,transform 150ms ease}
+.nav-button:hover,
+.today-button:hover,
+.toggle-button:hover,
+.calendar-title-item:hover,
+.picker-option:hover,
+.more-popover-item:hover{background:rgba(255,255,255,0.06)}
+.today-button{font-weight:700}
+.calendar-title{display:flex;align-items:center;gap:8px}
+.calendar-title-item{min-width:88px;text-align:center}
+.calendar-view-toggle{display:flex;align-items:center;gap:8px}
+.toggle-button.active{background:rgba(199,125,79,0.16);border-color:rgba(199,125,79,0.25)}
+.picker-panel{position:absolute;left:22px;top:78px;z-index:100;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 14px 30px rgba(0,0,0,0.35);width:300px}
+.picker-title{font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:14px}
+.picker-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.year-grid{grid-template-columns:repeat(4,1fr)}
+.picker-option{background:transparent;text-align:left}
+.weekdays{display:grid;grid-template-columns:repeat(7,1fr);color:var(--text-secondary);font-size:15px;font-weight:700;height:34px;align-items:center;padding:0}
 /* weeks constrained to 6 equal rows so the calendar grid never grows taller than its container */
 .weeks{display:grid;grid-template-rows:repeat(6,1fr);gap:12px;flex:1;overflow:hidden}
 .week{display:grid;grid-template-columns:repeat(7,1fr);gap:12px}
-.day{min-height:0;padding:8px;background:transparent;border-radius:10px;position:relative;height:100%;overflow:hidden}
+.day{min-height:0;padding:10px;background:transparent;border-radius:14px;position:relative;height:100%;overflow:hidden;transition:background 150ms ease,border-color 150ms ease,transform 150ms ease}
+.day.empty{background:transparent}
+.day:hover{background:rgba(255,255,255,0.02)}
+.day.weekend{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04)}
 .day .date{font-size:18px;font-weight:700;color:var(--text-primary)}
-.day .date.small{font-size:14px}
-.day.today{background:var(--accent);color:#fff;border-radius:8px;padding:8px;box-shadow:0 2px 8px rgba(0,0,0,0.25)}
+.day.today{background:var(--accent);color:#fff;border-radius:14px;padding:10px;box-shadow:0 2px 8px rgba(0,0,0,0.25)}
 .day.today .date{color:#fff}
-.placeholder-event{margin-top:6px;font-size:11px;display:inline-block;padding:3px 6px;border-radius:8px;color:#fff;font-weight:600}
-.placeholder-event.meeting{background:var(--event-meeting);color:var(--text-primary)}
-.placeholder-event.birthday{background:var(--event-birthday)}
-.placeholder-event.reminder{background:var(--event-reminder)}
-.placeholder-event.personal{background:var(--event-personal)}
- .selected{outline:2px solid rgba(199,125,79,0.2);border-radius:6px}
-.day.selected{box-shadow:inset 0 0 0 2px rgba(199,125,79,0.08);}
+.day.selected{box-shadow:inset 0 0 0 2px rgba(199,125,79,0.08)}
 .day.selected .date{font-weight:800}
-.event-chip{cursor:pointer;padding:6px 10px;border-radius:10px;margin-top:12px;display:inline-block;color:#fff;font-weight:600;font-size:12px;transition:transform 150ms ease, box-shadow 150ms ease, background 150ms ease;position:relative}
+.event-chip{cursor:pointer;padding:8px 10px;border-radius:12px;margin-top:12px;display:flex;flex-direction:column;gap:4px;color:var(--text-primary);font-weight:600;font-size:12px;position:relative;border-left:4px solid transparent;transition:transform 150ms ease, box-shadow 150ms ease, background 150ms ease}
 .event-chip:hover{transform:translateY(-1px)}
 .event-chip.highlight{box-shadow:0 0 0 2px rgba(255,255,255,0.16);}
-.event-chip.meeting{background:var(--event-meeting)}
-.event-chip.birthday{background:var(--event-birthday)}
-.event-chip.reminder{background:var(--event-reminder)}
-.event-chip.personal{background:var(--event-personal)}
+.event-chip-time{font-size:11px;color:var(--text-secondary);letter-spacing:0.02em}
+.event-chip-title{line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.more-events{margin-top:10px;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,0.06);color:var(--text-primary);font-size:12px;font-weight:700;border:none;width:100%;text-align:left}
+.more-popover{width:320px;display:flex;flex-direction:column;gap:10px}
+.more-popover-title{font-size:13px;font-weight:700;color:var(--text-secondary)}
+.more-popover-list{display:flex;flex-direction:column;gap:8px}
+.more-popover-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);color:var(--text-primary);text-align:left}
+.more-popover-time{font-size:12px;color:var(--text-secondary);min-width:50px}
+.more-popover-description{display:flex;align-items:center;gap:8px;flex:1;overflow:hidden}
+.more-popover-description span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.event-category-dot{width:10px;height:10px;border-radius:999px;display:inline-block}
+.category-indicator{width:10px;height:10px;border-radius:999px;display:inline-block}
 
 /* Portal-rendered tooltip (appears in document.body via portal) */
 .portal-tooltip{background:var(--surface);border:1px solid var(--border);padding:12px;border-radius:12px;min-width:220px;box-shadow:0 10px 30px rgba(0,0,0,0.6);color:var(--text-primary)}

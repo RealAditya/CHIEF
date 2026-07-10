@@ -4,9 +4,10 @@
 
 - First usable version of CHIEF completed.
 - Finalized Sprint 7 calendar experience stabilization and validated the first working event lifecycle.
-- Backend event CRUD now persists create, edit, and delete operations with stable validation.
-- Frontend dashboard shell supports manual event creation, editing, deletion, and confirmation flows.
-- Added milestone documentation and updated status and roadmap to reflect the release readiness.
+- Added calendar navigation, month/year selection, and week view polish.
+- Improved event chip layout to show time, title, and category colors without emojis.
+- Added keyboard shortcuts for new event, today, and month navigation.
+- Retained the existing dashboard layout while making the calendar feel more desktop-grade.
 
 ## 2026-07-09
 

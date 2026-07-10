@@ -6,6 +6,7 @@ import CommandBar from './components/CommandBar'
 import CreateEventModal from './components/CreateEventModal'
 import SmartAddModal from './components/SmartAddModal'
 import uiText from './config/uiText'
+import keyboardShortcuts from './config/keyboardShortcuts'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
 
@@ -17,6 +18,8 @@ export default function App() {
   const [smartAddOpen, setSmartAddOpen] = useState(false)
   const [selectedDate, setSelectedDate] = useState(() => new Date())
   const [selectedEventId, setSelectedEventId] = useState(null)
+  const [visibleDate, setVisibleDate] = useState(() => new Date())
+  const [viewMode, setViewMode] = useState('month')
 
   const loadEvents = useCallback(async () => {
     setLoading(true)
@@ -73,15 +76,44 @@ export default function App() {
     setModalOpen(false)
   }
 
+  function goPrevious(){
+    setVisibleDate((current) => {
+      if (viewMode === 'week') {
+        return new Date(current.getFullYear(), current.getMonth(), current.getDate() - 7)
+      }
+      return new Date(current.getFullYear(), current.getMonth() - 1, 1)
+    })
+  }
+
+  function goNext(){
+    setVisibleDate((current) => {
+      if (viewMode === 'week') {
+        return new Date(current.getFullYear(), current.getMonth(), current.getDate() + 7)
+      }
+      return new Date(current.getFullYear(), current.getMonth() + 1, 1)
+    })
+  }
+
+  function goToday(){
+    const today = new Date()
+    setVisibleDate(today)
+    setSelectedDate(today)
+  }
+
   function onSelectDay(date){
     setSelectedDate(date)
     setSelectedEventId(null)
+    if (viewMode === 'week') {
+      setVisibleDate(date)
+    }
   }
 
   function onOpenEvent(ev){
     setSelectedEventId(ev.id)
     // also set selected date to the event date
-    setSelectedDate(new Date(ev.start_datetime))
+    const eventDate = new Date(ev.start_datetime)
+    setSelectedDate(eventDate)
+    setVisibleDate(eventDate)
     // open modal for viewing/editing
     setModalOpen(true)
     setModalEvent(ev)
@@ -89,10 +121,54 @@ export default function App() {
 
   function onHighlightEvent(ev){
     setSelectedEventId(ev.id)
-    setSelectedDate(new Date(ev.start_datetime))
+    const eventDate = new Date(ev.start_datetime)
+    setSelectedDate(eventDate)
+    setVisibleDate(eventDate)
   }
 
   const [modalEvent, setModalEvent] = useState(null)
+
+  useEffect(() => {
+    function onKeyDown(event) {
+      const target = event.target
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT' || target.isContentEditable)) {
+        return
+      }
+
+      const key = event.key
+      if (key.toUpperCase() === keyboardShortcuts.openManualEvent) {
+        event.preventDefault()
+        openManualEvent()
+      }
+
+      if (key.toUpperCase() === keyboardShortcuts.jumpToToday) {
+        event.preventDefault()
+        goToday()
+      }
+
+      if (key === keyboardShortcuts.previousPeriod) {
+        event.preventDefault()
+        goPrevious()
+      }
+
+      if (key === keyboardShortcuts.nextPeriod) {
+        event.preventDefault()
+        goNext()
+      }
+
+      if (key === keyboardShortcuts.closeModal) {
+        if (modalOpen) {
+          closeModal()
+        }
+        if (smartAddOpen) {
+          closeSmartAdd()
+        }
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [modalOpen, smartAddOpen, viewMode])
 
   return (
     <div className="app-root">
@@ -104,16 +180,23 @@ export default function App() {
             <h2>{uiText.appTitle}</h2>
             <div className="header-actions">
               <button className="quick-add" onClick={openManualEvent}>+ {uiText.manualEvent}</button>
-              <button className="smart-add" onClick={openSmartAdd}>✨ {uiText.smartAdd}</button>
+              <button className="smart-add" onClick={openSmartAdd}>{uiText.smartAdd}</button>
             </div>
           </div>
           <Calendar
             events={events}
             loading={loading}
             selectedDate={selectedDate}
+            visibleDate={visibleDate}
+            viewMode={viewMode}
             onSelectDay={onSelectDay}
             onHighlightEvent={onHighlightEvent}
             onOpenEvent={onOpenEvent}
+            onChangeVisibleDate={setVisibleDate}
+            onChangeViewMode={setViewMode}
+            onNavigatePrev={goPrevious}
+            onNavigateNext={goNext}
+            onGoToday={goToday}
             selectedEventId={selectedEventId}
           />
         </section>

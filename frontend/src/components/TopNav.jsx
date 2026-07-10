@@ -15,8 +15,8 @@ export default function TopNav(){
       </div>
       <div className="center">{today}</div>
       <div className="right">
-        <IconPlaceholder label="🔔" />
-        <IconPlaceholder label="⚙️" />
+        <IconPlaceholder label="Alerts" />
+        <IconPlaceholder label="Settings" />
       </div>
     </header>
   )
