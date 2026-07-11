@@ -164,7 +164,7 @@ export default function Calendar({
   const hoveredEvent = hovered ? events.find((ev) => ev.id === hovered.id) : null
 
   return (
-    <div className="calendar">
+    <div className={`calendar ${viewMode}`}>
       <div className="calendar-controls">
         <div className="calendar-navigation">
           <button type="button" className="nav-button" onClick={onNavigatePrev} aria-label={uiText.previousMonth}>‹</button>

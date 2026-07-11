@@ -96,6 +96,32 @@ body{background:var(--bg);color:var(--text-primary);overflow:hidden}
 /* Ensure day-events column has a fixed area and never expands cells */
 .day-events{display:flex;flex-direction:column;gap:4px;overflow:hidden}
 .day-events > *{flex:0 0 auto}
+/* Month-view specific fixes: enforce definite heights and prevent expansion */
+/* Add a class on the calendar root (calendar month) so these only apply to month view */
+.calendar.month .app-root,
+.calendar.month .main-grid,
+.calendar.month .calendar-area,
+.calendar.month .calendar,
+.calendar.month .weeks {
+  min-height: 0;
+}
+
+.calendar.month .calendar-area { height: 100%; }
+.calendar.month .calendar { height: 100%; }
+.calendar.month .weeks { height: 100%; }
+.calendar.month .week { height: 100%; }
+.calendar.month .day { height: 100%; min-height: 0; display:flex; flex-direction:column; }
+
+/* Fixed event area: two rows + overflow button (px values chosen to fit) */
+.calendar.month .day .date{height:18px}
+.calendar.month .day-events{height:64px;overflow:hidden;display:flex;flex-direction:column;gap:4px}
+.calendar.month .day-events > *{flex:0 0 auto}
+.calendar.month .event-row{height:20px;padding:0 6px;margin:0;font-size:11px;line-height:20px}
+.calendar.month .more-events{height:20px;padding:0 6px;margin:0;font-size:11px}
+.calendar.month .event-row-time{min-width:48px}
+
+/* Ensure children don't inherit margins that increase intrinsic size */
+.calendar.month .event-row, .calendar.month .more-events { margin: 0 }
 .more-dots{opacity:0.9}
 .more-dot{width:10px;height:10px;border-radius:999px;display:inline-block}
 .more-popover{width:320px;display:flex;flex-direction:column;gap:10px}
