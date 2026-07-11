@@ -97,34 +97,8 @@ export default function Calendar({
   const isPickerOpen = Boolean(picker)
 
   const weeksRef = useRef(null)
-  const [visibleCount, setVisibleCount] = useState(3)
-
-  useEffect(() => {
-    // Measure weeks container and calculate how many event chips fit per day cell
-    function calculate() {
-      if (!weeksRef.current) return
-      const totalHeight = weeksRef.current.clientHeight || 0
-      const cellHeight = Math.floor(totalHeight / 6)
-      const DATE_HEADER_HEIGHT = 24 // slightly reduced header
-      const CHIP_HEIGHT = 30 // reduced chip height to compact layout
-      const CHIP_GAP = 6 // smaller vertical gap between chips
-      const available = Math.max(0, cellHeight - DATE_HEADER_HEIGHT - 10) // padding
-      const count = Math.max(0, Math.floor((available + CHIP_GAP) / (CHIP_HEIGHT + CHIP_GAP)))
-      // For month view, prefer a compact vertical list of two rows
-      if (viewMode === 'month') {
-        setVisibleCount(Math.max(1, Math.min(2, count)))
-      } else {
-        setVisibleCount(count)
-      }
-    }
-
-    calculate()
-    // debounce resize to avoid thrash
-    let raf = null
-    function onResize(){ if (raf) cancelAnimationFrame(raf); raf = requestAnimationFrame(calculate) }
-    window.addEventListener('resize', onResize)
-    return () => { window.removeEventListener('resize', onResize); if (raf) cancelAnimationFrame(raf) }
-  }, [viewMode])
+  // Fixed visible rows: month view always shows up to 2 rows; week view can show more
+  const visibleCount = viewMode === 'month' ? 2 : 6
 
   useEffect(() => {
     function handleOutsideClick(event) {
