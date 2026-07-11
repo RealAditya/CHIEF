@@ -21,12 +21,22 @@ def detect_category(text: str) -> tuple[str, list[str]]:
     
     text_lower = text.lower()
     
-    # Check each category's keywords
+    # Collect all candidate matches with their positions to prefer earlier/stronger matches
+    candidates: list[tuple[int, int, str, str]] = []  # (start_index, -keyword_len, category, keyword)
     for category, keywords in CATEGORY_KEYWORDS.items():
         for keyword in keywords:
-            if re.search(rf'\b{keyword}\b', text_lower):
-                warnings.append(f'category_inferred_from_{keyword}')
-                return category, warnings
-    
+            m = re.search(rf'\b{re.escape(keyword)}\b', text_lower)
+            if m:
+                start = m.start()
+                candidates.append((start, -len(keyword), category, keyword))
+
+    if candidates:
+        # Prefer the earliest match in text; break ties by longer keyword
+        candidates.sort()
+        best = candidates[0]
+        _, _, category, keyword = best
+        warnings.append(f'category_inferred_from_{keyword}')
+        return category, warnings
+
     # No match found
     return 'general', warnings + ['category_not_inferred']

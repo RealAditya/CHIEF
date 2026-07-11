@@ -152,12 +152,15 @@ def parse_date(text: str, reference: datetime) -> tuple[date | None, list[str]]:
                 return None, warnings
     
     # Numeric formats: 25/12, 25-12, 25.12, or 12/25 US format
-    m = re.search(r'(\d{1,2})[/-.](\d{1,2})(?:[/-.](\d{2,4}))?', text_lower)
+    m = re.search(r'(\d{1,2})(?:[\/\-.])(\d{1,2})(?:[\/\-.](\d{2,4}))?', text_lower)
     if m:
         a = int(m.group(1))
         b = int(m.group(2))
         c = m.group(3)
-        year_num = int(c) if c else ref_date.year
+        try:
+            year_num = int(c) if c else ref_date.year
+        except ValueError:
+            year_num = ref_date.year
         if len(c or '') == 2:
             year_num = 2000 + year_num
         

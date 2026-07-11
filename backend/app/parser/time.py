@@ -26,14 +26,12 @@ def parse_time(text: str) -> tuple[time | None, list[str]]:
     
     text_lower = text.lower()
     
-    # Check for keyword-based times first
-    for keyword, (hour, minute) in TIME_DEFAULTS.items():
-        if re.search(rf'\b{keyword}\b', text_lower):
-            return time(hour, minute), warnings
+    # NOTE: Prefer explicit numeric patterns first; keyword defaults are
+    # used only when no explicit time is found.
     
     # Explicit time patterns
-    # HH:MM or HH:MM AM/PM
-    m = re.search(r'\b(\d{1,2}):(\d{2})\s*(am|pm)?\b', text_lower)
+    # HH:MM, HH.MM or HH:MM AM/PM
+    m = re.search(r'\b(\d{1,2})[:\.](\d{2})\s*(am|pm)?\b', text_lower)
     if m:
         hour = int(m.group(1))
         minute = int(m.group(2))
@@ -96,5 +94,10 @@ def parse_time(text: str) -> tuple[time | None, list[str]]:
         else:
             warnings.append('invalid_time')
             return None, warnings
-    
+
+    # Keyword-based times (fallbacks like 'dinner', 'lunch', 'morning')
+    for keyword, (hour, minute) in TIME_DEFAULTS.items():
+        if re.search(rf'\b{re.escape(keyword)}\b', text_lower):
+            return time(hour, minute), warnings
+
     return None, warnings

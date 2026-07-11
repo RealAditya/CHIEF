@@ -42,21 +42,31 @@ def compute_confidence(
     all_warnings.extend(title_warnings)
     
     # Award points for parsed components
-    if has_date:
-        score += 0.4
-    
-    if has_time:
-        score += 0.3
-    
     if has_title:
+        score += 0.35
+
+    if has_date:
+        score += 0.25
+
+    if has_time:
         score += 0.2
-    
+
     if has_duration:
-        score += 0.1
-    
+        score += 0.05
+
+    # Bonus for category inferred (category warnings include category_inferred_from_*)
+    if any(w.startswith('category_inferred_from_') for w in all_warnings):
+        score += 0.15
+
     # Penalty for warnings
     warning_penalty = len(all_warnings) * 0.05
     score -= warning_penalty
+
+    # Extra penalty when parser explicitly fell back to defaults
+    if 'date_not_found' in all_warnings:
+        score -= 0.1
+    if 'time_not_found' in all_warnings:
+        score -= 0.05
     
     # Clamp to [0, 1]
     score = max(0.0, min(1.0, score))

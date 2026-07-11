@@ -33,6 +33,15 @@
   - Parser handles abbreviations (tom→tomorrow, nxt→next, etc.), multiple date formats, natural language times, and recurrence detection.
   - Confidence scoring and warnings system for parsing completeness and accuracy.
 
+### Sprint 9.1 — Parser Polish & Calendar Stabilization (2026-07-11)
+
+- Improved Smart Add title inference: parser now strips dates, weekdays, explicit times, durations, and numeric ranges from inferred titles and returns properly capitalized activity titles (e.g., "tom 6 gym" → "Gym").
+- Enhanced time parsing to support explicit ranges and both start/end detection (e.g., "7-9 football", "7pm-9pm football", "6 to 8 study"). Explicit times override defaults.
+- Broadened category keyword coverage for better suggestions (shopping, entertainment, sports, government, errands, finance, health, etc.).
+- Adjusted confidence scoring to reward detected date/time/category and penalize default fallbacks more clearly.
+- Frontend calendar month view polish to ensure the month grid always fits in a 1920×1080 viewport without page scrolling; overflow day lists open in internal popovers.
+- Expanded parser unit tests with conversational inputs and edge cases to reduce regressions.
+
 
 
 

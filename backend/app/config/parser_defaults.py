@@ -35,36 +35,59 @@ CATEGORY_KEYWORDS = {
     'work': [
         'meeting', 'sync', 'standup', 'review', 'client', 'project',
         'office', 'call', 'presentation', 'interview', 'conference',
+        'team', 'client', 'agenda', 'strategy',
     ],
     'health': [
         'gym', 'workout', 'exercise', 'doctor', 'dentist', 'hospital',
         'medical', 'appointment', 'therapy', 'physio', 'health',
+        'wellness', 'yoga', 'fitness', 'run', 'running',
+    ],
+    'sports': [
+        'badminton', 'tennis', 'table tennis', 'cricket', 'football',
+        'basketball', 'f1', 'soccer', 'swimming', 'cycling',
     ],
     'personal': [
         'birthday', 'party', 'wedding', 'anniversary', 'celebration',
         'family', 'friend', 'dinner', 'lunch', 'gathering', 'event',
+        'mom', 'dad', 'parents', 'household', 'family',
     ],
     'finance': [
         'bill', 'payment', 'invoice', 'emi', 'electricity', 'water',
         'tax', 'bank', 'accounting', 'finance', 'budget', 'expense',
+        'rent', 'loan', 'salary', 'mortgage',
+    ],
+    'admin': [
+        'passport', 'government', 'aadhaar', 'pan', 'license', 'visa',
+        'renewal', 'document', 'registration', 'id', 'license',
+    ],
+    'government': [
+        'passport', 'visa', 'registration', 'census', 'government', 'dmv', 'passport office',
+    ],
+    'shopping': [
+        'shopping', 'buy', 'groceries', 'milk', 'eggs', 'amazon',
+        'flipkart', 'store', 'order', 'deliver', 'purchase',
+    ],
+    'errands': [
+        'package', 'pickup', 'dropoff', 'post', 'mail', 'post office',
     ],
     'education': [
         'study', 'exam', 'assignment', 'homework', 'class', 'course',
         'learning', 'training', 'lecture', 'tutorial', 'school',
+        'os', 'cn',
     ],
     'travel': [
         'flight', 'airport', 'train', 'bus', 'travel', 'trip', 'journey',
         'booking', 'hotel', 'taxi', 'commute', 'drive',
     ],
-    'sports': [
-        'gym', 'workout', 'badminton', 'tennis', 'table tennis', 'cricket',
-        'football', 'basketball', 'yoga', 'swimming', 'running', 'cycling',
+    'entertainment': [
+        'movie', 'cinema', 'netflix', 'film', 'concert', 'show',
+        'tv', 'streaming', 'theater',
     ],
 }
 
 # Priority keywords
 PRIORITY_KEYWORDS = {
-    'high': ['urgent', 'asap', 'important', 'critical', 'deadline', 'emergency', 'rush'],
+    'high': ['urgent', 'asap', 'important', 'critical', 'deadline', 'emergency', 'rush', 'high priority'],
     'normal': [],  # default
     'low': ['someday', 'whenever', 'optional', 'casual'],
 }
@@ -110,13 +133,23 @@ ORDINALS = {
 # Recurrence patterns
 RECURRENCE_PATTERNS = {
     'daily': 'daily',
+    'every day': 'daily',
+    'everyday': 'daily',
     'everyday': 'daily',
     'weekly': 'weekly',
     'every week': 'weekly',
-    'biweekly': 'biweekly',
     'monthly': 'monthly',
+    'every month': 'monthly',
     'yearly': 'yearly',
+    'every year': 'yearly',
     'annually': 'yearly',
+    'biweekly': 'biweekly',
+    'every 2 weeks': 'biweekly',
+    'every two weeks': 'biweekly',
+    'every alternate day': 'every_other_day',
+    'every other day': 'every_other_day',
+    'every weekday': 'weekdays',
+    'every weekend': 'weekends',
 }
 
 # Default values when not specified

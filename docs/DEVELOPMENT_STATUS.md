@@ -35,6 +35,14 @@
 - Parser returns: title, description, start_datetime, end_datetime, category, priority, recurrence, confidence, warnings.
 - Confidence scoring and warnings help users identify incomplete or inferred fields.
 
+### Sprint 9.1 — In Progress (2026-07-11)
+
+- Polished Smart Add title extraction to remove dates, times, durations, and numeric ranges, returning clearer activity titles.
+- Improved time and duration parsing to support explicit ranges and produce accurate start/end datetimes.
+- Expanded category keyword lists to improve automatic category suggestions (shopping, government, errands, entertainment, sports).
+- Adjusted confidence scoring to more accurately reflect detected fields and reduce score when defaults are assumed.
+- Frontend month view polished so the month grid fits a 1920×1080 desktop viewport without causing page scroll; overflow day event lists open in internal popovers.
+
 ## Notes
 
 - CHIEF now officially supports two event creation paths:
