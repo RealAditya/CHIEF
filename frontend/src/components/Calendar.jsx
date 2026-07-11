@@ -110,7 +110,12 @@ export default function Calendar({
       const CHIP_GAP = 6 // smaller vertical gap between chips
       const available = Math.max(0, cellHeight - DATE_HEADER_HEIGHT - 10) // padding
       const count = Math.max(0, Math.floor((available + CHIP_GAP) / (CHIP_HEIGHT + CHIP_GAP)))
-      setVisibleCount(count)
+      // For month view, prefer a compact vertical list of two rows
+      if (viewMode === 'month') {
+        setVisibleCount(Math.max(1, Math.min(2, count)))
+      } else {
+        setVisibleCount(count)
+      }
     }
 
     calculate()
@@ -162,10 +167,11 @@ export default function Calendar({
     const category = eventCategoryMap[ev.category] ?? eventCategoryMap.other
     const chipBackground = `${category.color}22`
     return (
-      <div
+      <button
         key={ev.id}
-        className={`event-chip ${selectedEventId === ev.id ? 'highlight' : ''}`}
-        style={{ borderLeftColor: category.color, background: chipBackground, transition: theme.transition }}
+        type="button"
+        className={`event-row ${selectedEventId === ev.id ? 'highlight' : ''}`}
+        style={{ transition: theme.transition }}
         onClick={(e) => { e.stopPropagation(); onHighlightEvent && onHighlightEvent(ev) }}
         onDoubleClick={(e) => { e.stopPropagation(); onOpenEvent && onOpenEvent(ev) }}
         role="button"
@@ -174,9 +180,10 @@ export default function Calendar({
         onMouseEnter={(e) => { const rect = e.currentTarget.getBoundingClientRect(); setHovered({ id: ev.id, rect }) }}
         onMouseLeave={() => setHovered((current) => (current && current.id === ev.id ? null : current))}
       >
-        <div className="event-chip-time">{timeStr}</div>
-        <div className="event-chip-title">{ev.title}</div>
-      </div>
+        <div className="event-row-time">{timeStr}</div>
+        <div className="event-row-indicator" style={{ background: category.color }} />
+        <div className="event-row-title">{ev.title}</div>
+      </button>
     )
   }
 
@@ -236,12 +243,21 @@ export default function Calendar({
             {week.map((day, di) => {
               const key = day ? toKey(day) : null
               const dayEvents = key && byDay[key] ? byDay[key].slice().sort((a, b) => {
+                // Sort by priority first (high, normal, low), then by start time
+                const priorityWeight = (p) => {
+                  if (p === 'high') return 2
+                  if (p === 'normal') return 1
+                  if (p === 'low') return 0
+                  // numeric fallback
+                  if (typeof p === 'number') return p
+                  return 1
+                }
+                const pA = priorityWeight(a.priority)
+                const pB = priorityWeight(b.priority)
+                if (pA !== pB) return pB - pA // higher priority first
                 const tA = a.start_datetime ? new Date(a.start_datetime).getTime() : 0
                 const tB = b.start_datetime ? new Date(b.start_datetime).getTime() : 0
                 if (tA !== tB) return tA - tB
-                const pA = (a.priority != null) ? a.priority : 0
-                const pB = (b.priority != null) ? b.priority : 0
-                if (pA !== pB) return pB - pA // higher priority first
                 return (a.title || '').localeCompare(b.title || '')
               }) : []
               const isToday = key === todayKey
